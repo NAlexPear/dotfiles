@@ -4,4 +4,4 @@
 
 ## Screenshots
 
-![terminals](./screenshots/2020-12-21-104757_3000x1920_scrot.png)
+![terminals](./screenshots/2020-12-21-105220_1917x1078_scrot.png)
