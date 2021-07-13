@@ -11,23 +11,25 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'ajh17/Spacegray.vim'
   Plug 'cespare/vim-toml'
   Plug 'HerringtonDarkholme/yats.vim'
-  Plug 'itchyny/lightline.vim'
-  Plug 'junegunn/fzf.vim'
+  Plug 'hoob3rt/lualine.nvim'
   Plug 'jxnblk/vim-mdx-js'
-  Plug 'pangloss/vim-javascript'
-  Plug 'mxw/vim-jsx'
-  Plug 'neoclide/coc.nvim', {
-  \  'branch': 'release'
-  \}
+  Plug 'jiangmiao/auto-pairs'
   Plug 'lifepillar/pgsql.vim'
+  Plug 'kyazdani42/nvim-web-devicons'
+  Plug 'mxw/vim-jsx'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'nvim-lua/completion-nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-lua/popup.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'pangloss/vim-javascript'
   Plug 'rust-lang/rust.vim'
-  Plug 'suan/vim-instant-markdown', {'for': 'markdown'}
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-markdown'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-surround'
-  Plug 'voldikss/vim-floaterm'
 call plug#end()
 
 " THEME
@@ -41,39 +43,18 @@ hi SignColumn guibg=Background
 hi VertSplit guibg=Background
 hi NonText guifg=Background
 
-" black
-let g:terminal_color_0='#2C2F33'
-let g:terminal_color_8='#4B5056'
-
-" red
-let g:terminal_color_1='#B04C50'
-let g:terminal_color_9='#B04C50'
-
-" green
-let g:terminal_color_2='#919652'
-let g:terminal_color_10='#94985B'
-
-" yellow
-let g:terminal_color_3='#E2995C'
-let g:terminal_color_11='#E2995C'
-
-" blue
-let g:terminal_color_4='#66899D'
-let g:terminal_color_12='#66899D'
-
-" magenta
-let g:terminal_color_5='#8D6494'
-let g:terminal_color_13='#8D6494'
-
-" cyan
-let g:terminal_color_6='#527C77'
-let g:terminal_color_14='#527C77'
-
+hi LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red
+hi LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
+hi LspDiagnosticsVirtualTextInformation guifg=White ctermfg=Grey
+hi LspDiagnosticsVirtualTextHint guifg=White ctermfg=Grey
+hi LspDiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi LspDiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi LspDiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
+hi LspDiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
 
 " CORE 
 " =====================
-
-set cmdheight=2
+set completeopt=menuone,noinsert,noselect
 set expandtab
 set fillchars+=vert:\|
 set hidden
@@ -97,48 +78,8 @@ set termguicolors
 set ttimeoutlen=50
 set wildignorecase
 
-" FUNCTIONS
-" ===============
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-function! LightLineFilename() 
-  let parent = split(expand('%:p:h'), '/')[-1]
-  let child = expand('%:t')
-
-  return child ==# '' ? '[No Name]' : join([parent, child], '/')
-endfunction
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocActionAsync('doHover')
-  endif
-endfunction
-
-
-" COMMANDS
-" ===============
-
-" Use `:Format` to format current buffer
-command! -nargs=0 Format :call CocAction('format')
-
-" use `:OR` for organize import of current buffer
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-
-
 " KEYMAPS
 " ===============
-
-inoremap <silent><expr> <TAB>
-     \ pumvisible() ? "\<C-n>" :
-     \ <SID>check_back_space() ? "\<TAB>" :
-     \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
@@ -156,85 +97,112 @@ map <leader>w :w<CR>
 map <leader>d :!<Space>
 map <leader>e :e<Space>
 map <leader>c :cd<Space>
-map <silent> <leader>ff :Rg<Space>
-map <silent> <leader>f :Lines<CR>
-map <silent> <leader>t :Files<CR>
-map <silent> <leader>b :Buffers<CR>
-map <silent> <leader>h :History:<CR>
-nmap <silent> <leader>aj <Plug>(coc-diagnostic-next)
-nmap <silent> <leader>ak <Plug>(coc-diagnostic-prev)
-nmap <silent> <leader>at <Plug>(coc-type-definition)
-nmap <silent> <leader>ai <Plug>(coc-implementation)
-nmap <silent> <leader>ad <Plug>(coc-definition)
-nmap <silent> <leader>af <Plug>(coc-references)
+map <silent> <leader>t <cmd>Telescope find_files<CR>
+map <silent> <leader>f <cmd>Telescope treesitter<CR>
+map <silent> <leader>g <cmd>Telescope live_grep<CR>
+map <silent> <leader>b <cmd>Telescope buffers<CR>
+map <silent> <leader>h <cmd>Telescope command_history<CR>
+nmap <silent> <leader>a <cmd>Telescope lsp_code_actions<CR>
+nmap <silent> <leader>af <cmd>Telescope lsp_references<CR>
+nmap <silent> <leader>ai <cmd>Telescope lsp_implementations<CR>
+nmap <silent> <leader>ad <cmd>Telescope lsp_definitions<CR>
+nmap <silent> <leader>aj <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+nmap <silent> <leader>ak <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nmap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nmap <C-s> :mks! ~/.config/nvim/sessions/Session.vim<CR>
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-noremap <C-t> :FloatermToggle<CR>
-noremap! <C-t> <Esc>:FloatermToggle<CR>
-tnoremap <C-t> <C-\><C-n>:FloatermToggle<CR>
 
 
 " PLUGINS
 " ================
+lua << EOF
+-- LSP
+local lsp = require('lspconfig')
+local completion = require('completion')
 
-" CoC
-augroup mygroup
-  autocmd!
-  " Wrap lines automatically for markdown files
-  autocmd FileType markdown setl wrap linebreak
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+local on_attach = function(client)
+  completion.on_attach(client)
+end
 
-hi! CocErrorSign guifg=#C5735E
-hi! CocWarningSign guifg=#FFAF00
-hi! CocHintSign guifg=#353534
-hi! CocError guisp=#C5735E gui=undercurl
-hi! CocWarn guisp=#FFAF00 gui=undercurl
-hi! CocInfo guibg=#353534
+-- enable individual languages
+lsp.rust_analyzer.setup{
+  on_attach = on_attach,
+  settings = {
+    ["rust-analyzer"] = {
+      assist = {
+        importGranularity = "module"
+      },
+      diagnostics = {
+        disabled = { "inactive-code" }
+      },
+      inlayHints = {
+        chainingHints = false
+      },
+      cargo = {
+        loadOutDirsFromCheck = true,
+      },
+      procMacro = {
+        enable = true
+      }
+    }
+  }
+}
 
-" Emmet
-imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-let g:user_emmet_leader_key='<Tab>'
-let g:user_emmet_settings = {
-\  'javascript.jsx' : {
-\      'extends' : 'jsx',
-\  },
-\}
+lsp.tsserver.setup{
+  on_attach = on_attach
+}
 
-" Lightline
-function! CocCurrentFunction()
-  return get(b:, 'coc_current_function', '')
-endfunction
+-- enable diagnostics
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    signs = true,
+    underline = true,
+    virtual_text = true,
+  }
+)
 
-let g:lightline = {
-\   'active': {
-\     'left': [ [ 'mode', 'paste' ],
-\               [ 'cocstatus', 'currentfunction', 'readonly', 'filename', 'modified' ] ]
-\   },
-\   'component_function': {
-\     'cocstatus': 'coc#status',
-\     'currentfunction': 'CocCurrentFunction'
-\   },
-\ }
+-- Telescope
+local actions = require('telescope.actions')
 
-" FZF
-let $FZF_DEFAULT_COMMAND = 'fd --type f'
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<ESC>"] = actions.close
+      }
+    }
+  }
+}
 
-" Floaterm
-let g:floaterm_borderchars='       '
-let g:floaterm_title = ''
+-- Lualine
+require('lualine').setup{
+  options = {
+    theme = 'codedark',
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch'},
+    lualine_c = {'filename'},
+    lualine_x = {
+      {'diagnostics', sources={'nvim_lsp'}},
+    },
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  }
+}
+EOF
 
 " LANGUAGES 
 " ==================
+" JS/TS
+autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 100)
+
+" Rust
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 100)
 
 " Elm
 let g:elm_setup_keybindings = 0
@@ -246,13 +214,9 @@ let g:sql_type_default = 'pgsql'
 let g:markdown_fenced_languages = ['python', 'ruby', 'javascript', 'typescript', 'bash=sh']
 let g:markdown_syntax_conceal = 0
 
-" Starlark
+" Skylark
+au FileType markdown setl wrap linebreak
 au BufReadPost Tiltfile set filetype=python.skylark
-
-" TESTING
-" ==================
-
-let test#strategy = 'neovim'
 
 " PREVIEWS
 " =================
