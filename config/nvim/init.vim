@@ -12,10 +12,9 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'cespare/vim-toml'
   Plug 'HerringtonDarkholme/yats.vim'
   Plug 'itchyny/lightline.vim'
-  Plug 'janko/vim-test'
   Plug 'junegunn/fzf.vim'
+  Plug 'jxnblk/vim-mdx-js'
   Plug 'pangloss/vim-javascript'
-  Plug 'mtth/scratch.vim'
   Plug 'mxw/vim-jsx'
   Plug 'neoclide/coc.nvim', {
   \  'branch': 'release'
@@ -28,6 +27,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'tpope/vim-markdown'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-surround'
+  Plug 'voldikss/vim-floaterm'
 call plug#end()
 
 " THEME
@@ -117,7 +117,7 @@ function! s:show_documentation()
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
-    call CocAction('doHover')
+    call CocActionAsync('doHover')
   endif
 endfunction
 
@@ -169,13 +169,15 @@ nmap <silent> <leader>ad <Plug>(coc-definition)
 nmap <silent> <leader>af <Plug>(coc-references)
 nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
-nmap <silent> <C-n> :TestNearest<CR>
 nmap <C-s> :mks! ~/.config/nvim/sessions/Session.vim<CR>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
+noremap <C-t> :FloatermToggle<CR>
+noremap! <C-t> <Esc>:FloatermToggle<CR>
+tnoremap <C-t> <C-\><C-n>:FloatermToggle<CR>
 
 
 " PLUGINS
@@ -227,9 +229,9 @@ let g:lightline = {
 " FZF
 let $FZF_DEFAULT_COMMAND = 'fd --type f'
 
-" Scratch
-let g:scratch_persistence_file = "~/.config/nvim/sessions/Scratch"
-let g:scratch_top = 0
+" Floaterm
+let g:floaterm_borderchars='       '
+let g:floaterm_title = ''
 
 " LANGUAGES 
 " ==================
@@ -245,7 +247,7 @@ let g:markdown_fenced_languages = ['python', 'ruby', 'javascript', 'typescript',
 let g:markdown_syntax_conceal = 0
 
 " Starlark
-au BufREadPost Tiltfile set filetype=python
+au BufReadPost Tiltfile set filetype=python.skylark
 
 " TESTING
 " ==================
