@@ -22,7 +22,7 @@ style = "bold blue"
 style = "green"
 
 [nodejs]
-format = "[$symbol$version]($style) "
+format = "[$symbol $version]($style) "
 
 [rust]
 format = "[$symbol$version]($style) "
