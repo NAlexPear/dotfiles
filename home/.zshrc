@@ -1,10 +1,30 @@
-# Node.js conviguration
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# configure more robust history
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+setopt appendhistory
+setopt extended_history       
+setopt hist_expire_dups_first 
+setopt hist_ignore_dups      
+setopt hist_ignore_space    
 
-# Rust configuration
-export PATH="/usr/lib/:$PATH:$HOME/.local/bin:$HOME/.cargo/bin"
+# configure directory-changing behavior
+setopt auto_cd
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushdminus
+
+# configure completion
+zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
+unsetopt menu_complete   
+unsetopt flowcontrol
+setopt auto_menu         
+setopt complete_in_word
+setopt always_to_end
+
+# Node.js version configuration
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
 
 # fuzzy-searching configuration
 export FZF_BASE='/usr/bin/fzf'
@@ -14,14 +34,34 @@ export FZF_DEFAULT_COMMAND='fd --type f'
 export PLUGINS="$HOME/.plugins"
 
 while read -r PLUGIN; do
-  source "$PLUGIN";
-done < <(fd -g *.zsh $PLUGINS)
+  source "$PLUGIN"
+done < <(fd -g '*.zsh' $PLUGINS)
 
 # custom prompt
 eval "$(starship init zsh)"
 
 # alii
+alias g='git'
+alias ga='git add'
+alias gaa='git add --all'
+alias gb='git branch'
+alias gbD='git branch -D'
+alias gbs='git bisect'
+alias gcb='git checkout -b'
+alias gcmsg='git commit -m'
+alias gco='git checkout'
+alias gd='git diff'
+alias gf='git fetch'
+alias glo='git log --oneline --decorate'
+alias glol="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'"
+alias glols="git log --graph --pretty='%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --stat"
+alias gp='git push'
+alias gr='git remote'
+alias gra='git remote add'
+alias grb='git rebase'
+alias gst='git status'
 alias ls='exa'
+alias l='ls -al'
 
 # todo.txt configuration
 export TODOTXT_DEFAULT_ACTION='lsa'
