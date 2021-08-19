@@ -8,12 +8,12 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.config/nvim/plugged')
+  Plug 'AckslD/nvim-neoclip.lua'
   Plug 'ajh17/Spacegray.vim'
   Plug 'cespare/vim-toml'
   Plug 'HerringtonDarkholme/yats.vim'
   Plug 'hoob3rt/lualine.nvim'
   Plug 'jxnblk/vim-mdx-js'
-  Plug 'jiangmiao/auto-pairs'
   Plug 'lifepillar/pgsql.vim'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'mxw/vim-jsx'
@@ -23,10 +23,10 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'nvim-lua/popup.nvim'
   Plug 'nvim-telescope/telescope.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'onsails/lspkind-nvim'
   Plug 'pangloss/vim-javascript'
   Plug 'rust-lang/rust.vim'
   Plug 'tpope/vim-commentary'
-  Plug 'tpope/vim-fugitive'
   Plug 'tpope/vim-markdown'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-surround'
@@ -35,9 +35,7 @@ call plug#end()
 " THEME
 " =====================
 filetype plugin indent on
-syntax on
-
-colorscheme spacegray
+syntax enable
 
 hi SignColumn guibg=Background
 hi VertSplit guibg=Background
@@ -102,6 +100,7 @@ map <silent> <leader>f <cmd>Telescope treesitter<CR>
 map <silent> <leader>g <cmd>Telescope live_grep<CR>
 map <silent> <leader>b <cmd>Telescope buffers<CR>
 map <silent> <leader>h <cmd>Telescope command_history<CR>
+map <silent> <leader>y <cmd>:lua require('telescope').extensions.neoclip.default()<CR>
 nmap <silent> <leader>a <cmd>Telescope lsp_code_actions<CR>
 nmap <silent> <leader>af <cmd>Telescope lsp_references<CR>
 nmap <silent> <leader>ai <cmd>Telescope lsp_implementations<CR>
@@ -113,8 +112,12 @@ nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nmap <C-s> :mks! ~/.config/nvim/sessions/Session.vim<CR>
 
+" COLORSCHEME
+" ===============
+let g:spacegray_use_italics = 1
+colorscheme spacegray
 
-" PLUGINS
+" LUA CONFIGURATIONS
 " ================
 lua << EOF
 -- LSP
@@ -153,6 +156,8 @@ lsp.tsserver.setup{
   on_attach = on_attach
 }
 
+lsp.bashls.setup{}
+
 -- enable diagnostics
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -161,6 +166,11 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     virtual_text = true,
   }
 )
+
+-- LSPKind
+require('lspkind').init{
+  preset = 'default'
+}
 
 -- Telescope
 local actions = require('telescope.actions')
@@ -174,6 +184,9 @@ require('telescope').setup{
     }
   }
 }
+
+-- Neoclip
+require('neoclip').setup()
 
 -- Lualine
 require('lualine').setup{
@@ -191,6 +204,15 @@ require('lualine').setup{
     lualine_z = {'location'}
   }
 }
+
+-- TreeSitter
+--require('nvim-treesitter.configs').setup{
+ -- ensure_installed = 'maintained',
+ -- highlight = {
+  --  enable = true,
+  --  additional_vim_regex_highlighting = false
+ -- }
+--}
 EOF
 
 " LANGUAGES 
@@ -217,8 +239,3 @@ let g:markdown_syntax_conceal = 0
 " Skylark
 au FileType markdown setl wrap linebreak
 au BufReadPost Tiltfile set filetype=python.skylark
-
-" PREVIEWS
-" =================
-let g:instant_markdown_autostart = 0
-let g:instant_markdown_logfile = '/tmp/instant_markdown.log'
