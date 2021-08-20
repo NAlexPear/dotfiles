@@ -123,24 +123,42 @@ lua << EOF
 -- LSP
 local lsp = require('lspconfig')
 local completion = require('completion')
-
 local on_attach = function(client)
   completion.on_attach(client)
 end
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- enable auto-imports
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {'documentation', 'detail', 'additionalTextEdits'}
+}
+
+-- enable snippets
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+-- enable rust-analyzer goodies
+capabilities.experimental = {
+  hoverActions = true,
+  hoverRange = true
+}
+
+capabilities.experimental.commands = {
+    commands = {
+        'rust-analyzer.runSingle', 'rust-analyzer.debugSingle',
+        'rust-analyzer.showReferences', 'rust-analyzer.gotoLocation',
+        'editor.action.triggerParameterHints'
+    }
+}
+
 -- enable individual languages
 lsp.rust_analyzer.setup{
+  capabilities = capabilities,
   on_attach = on_attach,
   settings = {
-    ["rust-analyzer"] = {
-      assist = {
-        importGranularity = "module"
-      },
+    ['rust-analyzer'] = {
       diagnostics = {
-        disabled = { "inactive-code" }
-      },
-      inlayHints = {
-        chainingHints = false
+        disabled = {'inactive-code'}
       },
       cargo = {
         loadOutDirsFromCheck = true,
@@ -159,7 +177,7 @@ lsp.tsserver.setup{
 lsp.bashls.setup{}
 
 -- enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     signs = true,
     underline = true,
