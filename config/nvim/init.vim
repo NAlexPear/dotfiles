@@ -13,12 +13,12 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'cespare/vim-toml'
   Plug 'HerringtonDarkholme/yats.vim'
   Plug 'hoob3rt/lualine.nvim'
+  Plug 'hrsh7th/nvim-compe'
   Plug 'jxnblk/vim-mdx-js'
   Plug 'lifepillar/pgsql.vim'
   Plug 'kyazdani42/nvim-web-devicons'
   Plug 'mxw/vim-jsx'
   Plug 'neovim/nvim-lspconfig'
-  Plug 'nvim-lua/completion-nvim'
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-lua/popup.nvim'
   Plug 'nvim-telescope/telescope.nvim'
@@ -52,7 +52,7 @@ hi LspDiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=under
 
 " CORE 
 " =====================
-set completeopt=menuone,noinsert,noselect
+set completeopt=menuone,noselect
 set expandtab
 set fillchars+=vert:\|
 set hidden
@@ -78,9 +78,6 @@ set wildignorecase
 
 " KEYMAPS
 " ===============
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
 map ; :
 noremap ;; ;
 map <C-h> :e #<CR>
@@ -111,6 +108,11 @@ nmap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nmap <C-s> :mks! ~/.config/nvim/sessions/Session.vim<CR>
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 " COLORSCHEME
 " ===============
@@ -122,16 +124,15 @@ colorscheme spacegray
 lua << EOF
 -- LSP
 local lsp = require('lspconfig')
-local completion = require('completion')
-local on_attach = function(client)
-  completion.on_attach(client)
-end
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- enable auto-imports
 capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {'documentation', 'detail', 'additionalTextEdits'}
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits'
+  }
 }
 
 -- enable snippets
@@ -145,8 +146,10 @@ capabilities.experimental = {
 
 capabilities.experimental.commands = {
     commands = {
-        'rust-analyzer.runSingle', 'rust-analyzer.debugSingle',
-        'rust-analyzer.showReferences', 'rust-analyzer.gotoLocation',
+        'rust-analyzer.runSingle',
+        'rust-analyzer.debugSingle',
+        'rust-analyzer.showReferences',
+        'rust-analyzer.gotoLocation',
         'editor.action.triggerParameterHints'
     }
 }
@@ -154,7 +157,6 @@ capabilities.experimental.commands = {
 -- enable individual languages
 lsp.rust_analyzer.setup{
   capabilities = capabilities,
-  on_attach = on_attach,
   settings = {
     ['rust-analyzer'] = {
       diagnostics = {
@@ -170,11 +172,33 @@ lsp.rust_analyzer.setup{
   }
 }
 
-lsp.tsserver.setup{
-  on_attach = on_attach
-}
-
+lsp.tsserver.setup{}
 lsp.bashls.setup{}
+
+-- enable fancy completion
+require('compe').setup{
+  enabled = true,
+  autocomplete = true,
+  debug = false,
+  min_length = 1,
+  preselect = 'enable',
+  throttle_time = 80,
+  source_timeout = 200,
+  resolve_timeout = 800,
+  incomplete_delay = 400,
+  max_abbr_width = 100,
+  max_kind_width = 100,
+  max_menu_width = 100,
+  documentation = true,
+
+  source = {
+    path = true,
+    buffer = true,
+    calc = true,
+    nvim_lsp = true,
+    nvim_lua = true,
+  }
+}
 
 -- enable diagnostics
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
@@ -222,15 +246,6 @@ require('lualine').setup{
     lualine_z = {'location'}
   }
 }
-
--- TreeSitter
---require('nvim-treesitter.configs').setup{
- -- ensure_installed = 'maintained',
- -- highlight = {
-  --  enable = true,
-  --  additional_vim_regex_highlighting = false
- -- }
---}
 EOF
 
 " LANGUAGES 
