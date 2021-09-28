@@ -18,9 +18,13 @@ setopt pushdminus
 zstyle ':completion:*'  matcher-list 'm:{a-z}={A-Z}'
 unsetopt menu_complete   
 unsetopt flowcontrol
+unsetopt nomatch
 setopt auto_menu         
 setopt complete_in_word
 setopt always_to_end
+
+# configure vi mode
+bindkey -v
 
 # Node.js version configuration
 export VOLTA_HOME="$HOME/.volta"
