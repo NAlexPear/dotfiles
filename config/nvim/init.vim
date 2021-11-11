@@ -11,20 +11,19 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'AckslD/nvim-neoclip.lua'
   Plug 'ajh17/Spacegray.vim'
   Plug 'cespare/vim-toml'
-  Plug 'HerringtonDarkholme/yats.vim'
+  Plug 'folke/lsp-colors.nvim'
   Plug 'hoob3rt/lualine.nvim'
-  Plug 'hrsh7th/nvim-compe'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/nvim-cmp'
   Plug 'jxnblk/vim-mdx-js'
   Plug 'lifepillar/pgsql.vim'
   Plug 'kyazdani42/nvim-web-devicons'
-  Plug 'mxw/vim-jsx'
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-lua/popup.nvim'
   Plug 'nvim-telescope/telescope.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   Plug 'onsails/lspkind-nvim'
-  Plug 'pangloss/vim-javascript'
   Plug 'rust-lang/rust.vim'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-markdown'
@@ -32,27 +31,9 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'tpope/vim-surround'
 call plug#end()
 
-" THEME
-" =====================
-filetype plugin indent on
-syntax enable
-
-hi SignColumn guibg=Background
-hi VertSplit guibg=Background
-hi NonText guifg=Background
-
-hi LspDiagnosticsVirtualTextError guifg=Red ctermfg=Red
-hi LspDiagnosticsVirtualTextWarning guifg=Yellow ctermfg=Yellow
-hi LspDiagnosticsVirtualTextInformation guifg=White ctermfg=Grey
-hi LspDiagnosticsVirtualTextHint guifg=White ctermfg=Grey
-hi LspDiagnosticsUnderlineError guifg=NONE ctermfg=NONE cterm=underline gui=underline
-hi LspDiagnosticsUnderlineWarning guifg=NONE ctermfg=NONE cterm=underline gui=underline
-hi LspDiagnosticsUnderlineInformation guifg=NONE ctermfg=NONE cterm=underline gui=underline
-hi LspDiagnosticsUnderlineHint guifg=NONE ctermfg=NONE cterm=underline gui=underline
-
 " CORE 
 " =====================
-set completeopt=menuone,noselect
+set completeopt=menu,menuone,noselect
 set expandtab
 set fillchars+=vert:\|
 set hidden
@@ -104,27 +85,53 @@ nmap <silent> <leader>ai <cmd>Telescope lsp_implementations<CR>
 nmap <silent> <leader>ad <cmd>Telescope lsp_definitions<CR>
 nmap <silent> <leader>aj <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 nmap <silent> <leader>ak <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nmap <silent> H <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 nmap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
 nmap <C-s> :mks! ~/.config/nvim/sessions/Session.vim<CR>
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-
-" COLORSCHEME
-" ===============
-let g:spacegray_use_italics = 1
-colorscheme spacegray
 
 " LUA CONFIGURATIONS
 " ================
 lua << EOF
+-- Completion
+local cmp = require('cmp')
+local lspkind = require('lspkind')
+
+cmp.setup{
+  enabled = true,
+  formatting = {
+    format = lspkind.cmp_format()
+  },
+  mapping = {
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable,
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+  }, {
+    { name = 'buffer' },
+  })
+}
+
+-- Tree-Sitter
+require('nvim-treesitter.configs').setup{
+  ensure_installed = 'maintained',
+  highlight = {
+    enable = true
+  }
+}
+
 -- LSP
 local lsp = require('lspconfig')
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- enable auto-imports
 capabilities.textDocument.completion.completionItem.resolveSupport = {
@@ -159,15 +166,19 @@ lsp.rust_analyzer.setup{
   capabilities = capabilities,
   settings = {
     ['rust-analyzer'] = {
+      cargo = {
+        allFeatures = true,
+        loadOutDirsFromCheck = true,
+      },
+      checkOnSave = {
+        command = "clippy"
+      },
       diagnostics = {
         disabled = {'inactive-code'}
       },
-      cargo = {
-        loadOutDirsFromCheck = true,
-      },
       procMacro = {
         enable = true
-      }
+      },
     }
   }
 }
@@ -175,44 +186,38 @@ lsp.rust_analyzer.setup{
 lsp.tsserver.setup{}
 lsp.bashls.setup{}
 
--- enable fancy completion
-require('compe').setup{
-  enabled = true,
-  autocomplete = true,
-  debug = false,
-  min_length = 1,
-  preselect = 'enable',
-  throttle_time = 80,
-  source_timeout = 200,
-  resolve_timeout = 800,
-  incomplete_delay = 400,
-  max_abbr_width = 100,
-  max_kind_width = 100,
-  max_menu_width = 100,
-  documentation = true,
-
-  source = {
-    path = true,
-    buffer = true,
-    calc = true,
-    nvim_lsp = true,
-    nvim_lua = true,
-  }
-}
-
 -- enable diagnostics
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
     signs = true,
     underline = true,
-    virtual_text = true,
+    update_in_insert = true,
+    virtual_text = false,
   }
 )
 
--- LSPKind
-require('lspkind').init{
-  preset = 'default'
+-- set colors for diagnostics
+require('lsp-colors').setup{
+  Hint = '#b7bbb7',
 }
+
+-- set diagnostic symbols
+vim.fn.sign_define(
+  'LspDiagnosticsSignError',
+  { texthl = 'LspDiagnosticsSignError', text = ' ●', numhl = 'LspDiagnosticsSignError' }
+)
+vim.fn.sign_define(
+  'LspDiagnosticsSignWarning',
+  { texthl = 'LspDiagnosticsSignWarning', text = ' ●', numhl = 'LspDiagnosticsSignWarning' }
+)
+vim.fn.sign_define(
+  'LspDiagnosticsSignHint',
+  { texthl = 'LspDiagnosticsSignHint', text = ' ●', numhl = 'LspDiagnosticsSignHint' }
+)
+vim.fn.sign_define(
+  'LspDiagnosticsSignInformation',
+  { texthl = 'LspDiagnosticsSignInformation', text = ' ●', numhl = 'LspDiagnosticsSignInformation' }
+)
 
 -- Telescope
 local actions = require('telescope.actions')
@@ -221,7 +226,7 @@ require('telescope').setup{
   defaults = {
     mappings = {
       i = {
-        ["<ESC>"] = actions.close
+        ['<ESC>'] = actions.close
       }
     }
   }
@@ -247,6 +252,20 @@ require('lualine').setup{
   }
 }
 EOF
+
+" COLORSCHEME
+" ===============
+let g:spacegray_use_italics = 1
+colorscheme spacegray
+
+" THEME
+" =====================
+filetype plugin indent on
+
+hi SignColumn guibg=Background
+hi VertSplit guibg=Background
+hi NonText guifg=Background
+
 
 " LANGUAGES 
 " ==================
