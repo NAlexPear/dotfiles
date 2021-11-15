@@ -265,7 +265,7 @@ filetype plugin indent on
 hi SignColumn guibg=Background
 hi VertSplit guibg=Background
 hi NonText guifg=Background
-
+hi rustTSInclude guifg=#8D6494
 
 " LANGUAGES 
 " ==================
