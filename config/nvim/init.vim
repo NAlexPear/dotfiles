@@ -9,13 +9,14 @@ endif
 
 call plug#begin('~/.config/nvim/plugged')
   Plug 'AckslD/nvim-neoclip.lua'
-  Plug 'ajh17/Spacegray.vim'
+  Plug 'NAlexPear/Spacegray.nvim'
   Plug 'cespare/vim-toml'
-  Plug 'folke/lsp-colors.nvim'
   Plug 'hoob3rt/lualine.nvim'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-vsnip'
   Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/vim-vsnip'
   Plug 'jxnblk/vim-mdx-js'
   Plug 'lifepillar/pgsql.vim'
   Plug 'kyazdani42/nvim-web-devicons'
@@ -114,8 +115,14 @@ cmp.setup{
     }),
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end
+  },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
+    { name = 'vsnip' },
   }, {
     { name = 'buffer' },
   })
@@ -196,11 +203,6 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   }
 )
 
--- set colors for diagnostics
-require('lsp-colors').setup{
-  Hint = '#b7bbb7',
-}
-
 -- set diagnostic symbols
 vim.fn.sign_define(
   'LspDiagnosticsSignError',
@@ -251,21 +253,14 @@ require('lualine').setup{
     lualine_z = {'location'}
   }
 }
-EOF
 
-" COLORSCHEME
-" ===============
-let g:spacegray_use_italics = 1
-colorscheme spacegray
+-- Colorscheme
+vim.cmd[[colorscheme spacegray]]
+EOF
 
 " THEME
 " =====================
 filetype plugin indent on
-
-hi SignColumn guibg=Background
-hi VertSplit guibg=Background
-hi NonText guifg=Background
-hi rustTSInclude guifg=#8D6494
 
 " LANGUAGES 
 " ==================
