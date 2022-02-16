@@ -1,4 +1,6 @@
+*.old
 .netrwhist
 plugged
 sessions
 swap
+target

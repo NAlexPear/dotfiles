@@ -117,7 +117,7 @@ cmp.setup{
   },
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
+      vim.fn['vsnip#anonymous'](args.body)
     end
   },
   sources = cmp.config.sources({
@@ -125,8 +125,16 @@ cmp.setup{
     { name = 'vsnip' },
   }, {
     { name = 'buffer' },
-  })
+  }),
 }
+
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
 
 -- Tree-Sitter
 require('nvim-treesitter.configs').setup{
@@ -192,6 +200,7 @@ lsp.rust_analyzer.setup{
 
 lsp.tsserver.setup{}
 lsp.bashls.setup{}
+lsp.sumneko_lua.setup{}
 
 -- enable diagnostics
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
@@ -205,20 +214,20 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 
 -- set diagnostic symbols
 vim.fn.sign_define(
-  'LspDiagnosticsSignError',
-  { texthl = 'LspDiagnosticsSignError', text = ' ●', numhl = 'LspDiagnosticsSignError' }
+  'DiagnosticSignError',
+  { texthl = 'DiagnosticSignError', text = ' ●', numhl = 'DiagnosticSignError' }
 )
 vim.fn.sign_define(
-  'LspDiagnosticsSignWarning',
-  { texthl = 'LspDiagnosticsSignWarning', text = ' ●', numhl = 'LspDiagnosticsSignWarning' }
+  'DiagnosticSignWarning',
+  { texthl = 'DiagnosticSignWarning', text = ' ●', numhl = 'DiagnosticSignWarning' }
 )
 vim.fn.sign_define(
-  'LspDiagnosticsSignHint',
-  { texthl = 'LspDiagnosticsSignHint', text = ' ●', numhl = 'LspDiagnosticsSignHint' }
+  'DiagnosticSignHint',
+  { texthl = 'DiagnosticSignHint', text = ' ●', numhl = 'DiagnosticSignHint' }
 )
 vim.fn.sign_define(
-  'LspDiagnosticsSignInformation',
-  { texthl = 'LspDiagnosticsSignInformation', text = ' ●', numhl = 'LspDiagnosticsSignInformation' }
+  'DiagnosticSignInformation',
+  { texthl = 'DiagnosticSignInformation', text = ' ●', numhl = 'DiagnosticSignInformation' }
 )
 
 -- Telescope
@@ -247,7 +256,7 @@ require('lualine').setup{
     lualine_b = {'branch'},
     lualine_c = {'filename'},
     lualine_x = {
-      {'diagnostics', sources={'nvim_lsp'}},
+      {'diagnostics', sources={'nvim_diagnostic'}},
     },
     lualine_y = {'progress'},
     lualine_z = {'location'}
