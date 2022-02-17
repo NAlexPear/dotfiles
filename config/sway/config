@@ -21,7 +21,7 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu wofi --show=run --monitor=DP-2 --lines=5 --prompt="" --width=800
 
 ### Output configuration
 output * mode 1920x1080@144Hz background '#000000' solid_color
@@ -43,6 +43,9 @@ output DP-2 position 1080,433
 
     # Start your launcher
     bindsym $mod+d exec $menu
+
+    # Pick an emoji with $menu
+    bindsym $mod+e exec ~/.config/wofi/emoji.sh
 
     # Reload the configuration file
     bindsym $mod+Shift+c reload
