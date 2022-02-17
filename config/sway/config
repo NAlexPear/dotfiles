@@ -47,6 +47,9 @@ output DP-2 position 1080,433
     # Reload the configuration file
     bindsym $mod+Shift+c reload
 
+    # Start/Stop Spotify
+    bindsym $mod+Space exec playerctl --player=spotify play-pause
+
     # Exit sway (logs you out of your Wayland session)
     bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 #
@@ -153,7 +156,15 @@ mode "resize" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
 bindsym $mod+r mode "resize"
+
+#
+# Bars and Launchers
+#
+bar {
+  swaybar_command waybar
+}
 
 # autostart applications
 exec --no-startup-id swaymsg workspace 1

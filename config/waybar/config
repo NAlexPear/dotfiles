@@ -1,0 +1,33 @@
+{
+    "output": "DP-2",
+    "modules-left": ["custom/spotify"],
+    "modules-center": ["sway/workspaces", "sway/mode"],
+    "modules-right": ["clock"],
+    "sway/workspaces": {
+        "all-outputs": true,
+        "format": "{icon}",
+        "disable-scroll": true,
+        "tooltip": false,
+        "format-icons": {
+          "default": "⬤"
+        }
+    },
+    "sway/mode": {
+        "format": "<span style=\"italic\">{}</span>"
+    },
+    "network": {
+        "format-ethernet": "{ifname} ",
+        "format-disconnected": "", 
+        "max-length": 50,
+    },
+    "clock": {
+        "interval": 10,
+        "timezone": "America/New_York",
+        "format": "{:%A, %b %d %I:%M%p}",
+        "tooltip": false
+    },
+    "custom/spotify": {
+        "exec": "~/.config/waybar/spotify.sh",
+        "format": "{}"
+    }
+}

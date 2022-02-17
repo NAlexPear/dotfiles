@@ -1,9 +1,5 @@
 #!/bin/bash
 
-config="polybar --config=$HOME/.config/polybar/config.ini"
-
-primary=$($config --dump=primary left)
-secondary=$($config --dump=secondary left)
 elapsed="0"
 cache=""
 
@@ -27,16 +23,16 @@ while [[ $(ps -u $USER | grep spotify) ]]; do
   function get_info {
     position=`printf ""%d:%02d"" $(($elapsed%3600/60)) $(($elapsed%60))`
 
-    echo "$title by $artist $album  $position $timestamp"
+    echo "$title <span style=\"italic\">by</span> $artist $album  $position $timestamp"
   }
 
   if [ "$(playerctl status)" = "Playing" ]; then
     elapsed=$(($elapsed + 1))
     update_cache
 
-    echo " $(get_info)"
+    echo "⏸ $(get_info)"
   else
-    echo " $(get_info)"
+    echo "▶ $(get_info)"
   fi
 
   sleep 1

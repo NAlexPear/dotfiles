@@ -6,19 +6,19 @@
 
 To symlink these files to the proper locations, use `link.sh`.
 
-X-based linux distros with `systemd` are assumed, and no dependency resolution is attempted. You will probably want to install the following for the best experience:
+Linux distros with `systemd` are assumed, and no dependency resolution is attempted. You will probably want to install the following for the best experience:
 
 `bat`
-`cargo`
 `fd`
 `fzf`
-`i3-gaps`
 `kitty`
 `nvim`
 `playerctl`
-`picom`
+`sway`
 `ttf-iosevka`
 `ttf-iosevka-term`
+`wofi`
+`waybar`
 `z`
 
 ## Screenshots
