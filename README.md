@@ -23,4 +23,4 @@ Linux distros with `systemd` are assumed, and no dependency resolution is attemp
 
 ## Screenshots
 
-![terminals](./screenshots/2020-12-21-105220_1917x1078_scrot.png)
+![terminals](./screenshots/desktop.png)
