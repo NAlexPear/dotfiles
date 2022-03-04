@@ -84,9 +84,9 @@ nmap <silent> <leader>a <cmd>Telescope lsp_code_actions<CR>
 nmap <silent> <leader>af <cmd>Telescope lsp_references<CR>
 nmap <silent> <leader>ai <cmd>Telescope lsp_implementations<CR>
 nmap <silent> <leader>ad <cmd>Telescope lsp_definitions<CR>
-nmap <silent> <leader>aj <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nmap <silent> <leader>ak <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nmap <silent> H <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+nmap <silent> <leader>aj <cmd>lua vim.diagnostic.goto_next()<CR>
+nmap <silent> <leader>ak <cmd>lua vim.diagnostic.goto_prev()<CR>
+nmap <silent> H <cmd>lua vim.diagnostic.open_float(0, {scope="line"})<CR>
 nmap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> <leader>= :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
 nnoremap <silent> <leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
@@ -146,7 +146,8 @@ require('nvim-treesitter.configs').setup{
 
 -- LSP
 local lsp = require('lspconfig')
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 -- enable auto-imports
 capabilities.textDocument.completion.completionItem.resolveSupport = {
@@ -186,7 +187,7 @@ lsp.rust_analyzer.setup{
         loadOutDirsFromCheck = true,
       },
       checkOnSave = {
-        command = "clippy"
+        command = 'clippy'
       },
       diagnostics = {
         disabled = {'inactive-code'}
@@ -201,16 +202,6 @@ lsp.rust_analyzer.setup{
 lsp.tsserver.setup{}
 lsp.bashls.setup{}
 lsp.sumneko_lua.setup{}
-
--- enable diagnostics
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    signs = true,
-    underline = true,
-    update_in_insert = true,
-    virtual_text = false,
-  }
-)
 
 -- set diagnostic symbols
 vim.fn.sign_define(
