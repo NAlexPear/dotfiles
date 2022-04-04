@@ -189,12 +189,26 @@ lsp.rust_analyzer.setup{
       checkOnSave = {
         command = 'clippy'
       },
+      completion = {
+        privateEditable = {
+          enable = true
+        }
+      },
       diagnostics = {
         disabled = {'inactive-code'}
+      },
+      experimental = {
+        procAttrMacros = true
+      },
+      hoverActions = {
+        references = true
       },
       procMacro = {
         enable = true
       },
+      rustfmt = {
+        enableRangeFormatting = true
+      }
     }
   }
 }
