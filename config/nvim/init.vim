@@ -24,6 +24,7 @@ call plug#begin('~/.config/nvim/plugged')
   Plug 'nvim-lua/plenary.nvim'
   Plug 'nvim-telescope/telescope.nvim'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-treesitter/nvim-treesitter-textobjects'
   Plug 'onsails/lspkind-nvim'
   Plug 'rust-lang/rust.vim'
   Plug 'tpope/vim-commentary'
@@ -138,9 +139,31 @@ cmp.setup.cmdline(':', {
 
 -- Tree-Sitter
 require('nvim-treesitter.configs').setup{
-  ensure_installed = 'maintained',
+  ensure_installed = 'all',
   highlight = {
     enable = true
+  },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@class.outer',
+        ['ic'] = '@class.outer',
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = {
+        ['<leader>j'] = '@function.outer'
+      },
+      goto_previous_start = {
+        ['<leader>k'] = '@function.outer'
+      }
+    }
   }
 }
 
