@@ -81,7 +81,7 @@ map <silent> <leader>g <cmd>Telescope live_grep<CR>
 map <silent> <leader>b <cmd>Telescope buffers<CR>
 map <silent> <leader>h <cmd>Telescope command_history<CR>
 map <silent> <leader>y <cmd>:lua require('telescope').extensions.neoclip.default()<CR>
-nmap <silent> <leader>a <cmd>Telescope lsp_code_actions<CR>
+nmap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
 nmap <silent> <leader>af <cmd>Telescope lsp_references<CR>
 nmap <silent> <leader>ai <cmd>Telescope lsp_implementations<CR>
 nmap <silent> <leader>ad <cmd>Telescope lsp_definitions<CR>
