@@ -73,9 +73,25 @@ return {
       }
     }
 
-    lsp.tsserver.setup {}
-    lsp.bashls.setup {}
+    lsp.eslint.setup {
+      capabilities = capabilities,
+      on_attach = function(_, buffer)
+        vim.api.nvim_create_autocmd('BufWritePre', {
+          buffer = buffer,
+          command = 'EslintFixAll',
+        })
+      end
+    }
+
+    lsp.tsserver.setup {
+      capabilities = capabilities,
+    }
+
+    lsp.bashls.setup {
+      capabilities = capabilities,
+    }
     lsp.lua_ls.setup {
+      capabilities = capabilities,
       settings = {
         Lua = {
           diagnostics = {
@@ -84,7 +100,9 @@ return {
         }
       }
     }
-    lsp.ccls.setup {}
+    lsp.ccls.setup {
+      capabilities = capabilities,
+    }
 
     -- set diagnostic symbols
     vim.fn.sign_define(
