@@ -67,7 +67,8 @@ alias gra='git remote add'
 alias grb='git rebase'
 alias gst='git status'
 alias ls='exa'
-alias l='ls -al'
+alias l='erd -c ls'
+alias tree='erd -c tree'
 
 # todo.txt configuration
 export TODOTXT_DEFAULT_ACTION='lsa'
