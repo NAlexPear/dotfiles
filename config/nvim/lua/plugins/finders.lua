@@ -22,6 +22,14 @@ return {
   },
   config = function()
     require('neoclip').setup()
-    require('fzf-lua').setup()
+    require('fzf-lua').setup({
+      winopts = {
+        width = 0.95,
+        preview = {
+          vertical = 'up:75%',
+          layout = 'vertical',
+        }
+      }
+    })
   end
 }
