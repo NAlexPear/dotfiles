@@ -167,7 +167,7 @@ require('nvim-treesitter.configs').setup{
 -- LSP
 local lsp = require('lspconfig')
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- enable auto-imports
 capabilities.textDocument.completion.completionItem.resolveSupport = {
@@ -228,6 +228,9 @@ lsp.rust_analyzer.setup{
       },
       rustfmt = {
         enableRangeFormatting = true
+      },
+      checkOnSave = {
+        extraArgs = {'--target-dir', 'target/rust-analyzer'}
       }
     }
   }
@@ -235,7 +238,8 @@ lsp.rust_analyzer.setup{
 
 lsp.tsserver.setup{}
 lsp.bashls.setup{}
-lsp.sumneko_lua.setup{}
+lsp.lua_ls.setup{}
+lsp.ccls.setup{}
 
 -- set diagnostic symbols
 vim.fn.sign_define(
@@ -299,13 +303,13 @@ filetype plugin indent on
 " LANGUAGES 
 " ==================
 " JS/TS
-autocmd BufWritePre *.js lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.jsx lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.tsx lua vim.lsp.buf.formatting_sync(nil, 100)
-autocmd BufWritePre *.ts lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.js lua vim.lsp.buf.format()
+autocmd BufWritePre *.jsx lua vim.lsp.buf.format()
+autocmd BufWritePre *.tsx lua vim.lsp.buf.format()
+autocmd BufWritePre *.ts lua vim.lsp.buf.format()
 
 " Rust
-autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 100)
+autocmd BufWritePre *.rs lua vim.lsp.buf.format()
 
 " Elm
 let g:elm_setup_keybindings = 0
