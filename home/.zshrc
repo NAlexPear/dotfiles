@@ -33,6 +33,9 @@ export PATH="$VOLTA_HOME/bin:$PATH"
 # fuzzy-searching configuration
 export FZF_BASE='/usr/bin/fzf'
 export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+  --color=pointer:#b04c50,bg+:#111314
+'
 
 # plugin configuration
 export PLUGINS="$HOME/.plugins"
