@@ -7,6 +7,7 @@ return {
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-vsnip',
   },
+  event = 'InsertEnter',
   config = function()
     local cmp = require('cmp')
     local lspkind = require('lspkind')
