@@ -90,6 +90,7 @@ return {
     lsp.bashls.setup {
       capabilities = capabilities,
     }
+
     lsp.lua_ls.setup {
       capabilities = capabilities,
       settings = {
@@ -100,8 +101,15 @@ return {
         }
       }
     }
+
     lsp.ccls.setup {
       capabilities = capabilities,
+    }
+
+    lsp.html.setup {
+      filetypes = { 'html', 'handlebars', 'html.handlebars' },
+      capabilities = capabilities,
+      provideFormatter = true,
     }
 
     -- set diagnostic symbols
