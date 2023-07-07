@@ -1,0 +1,39 @@
+{
+  "formatting": {
+    "default": "unified",
+    "unified": {
+      "addition": {
+        "highlight": null,
+        "regular-foreground": "green",
+        "emphasized-foreground": "green",
+        "bold": true,
+        "underline": false,
+        "prefix": "+ "
+      },
+      "deletion": {
+        "highlight": null,
+        "regular-foreground": "red",
+        "emphasized-foreground": "red",
+        "bold": true,
+        "underline": false,
+        "prefix": "- "
+      }
+    },
+    "json": {
+      "pretty_print": false
+    },
+    "custom": {}
+  },
+  "grammar": {
+    "dylib-overrides": null,
+    "file-associations": {
+      "js": "typescript"
+    },
+  },
+  "input-processing": {
+    "split-graphemes": true,
+    "exclude-kinds": null,
+    "include-kinds": null
+  },
+  "fallback-cmd": "diff"
+}

@@ -1,0 +1,13 @@
+[user]
+	name = Alex Pearson
+	email = alex@alexpear.com
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main
+[diff]
+        tool = diffsitter
+[difftool]
+        prompt = false
+[difftool "diffsitter"]
+        cmd = diffsitter "$LOCAL" "$REMOTE"
