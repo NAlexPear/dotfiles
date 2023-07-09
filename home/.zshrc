@@ -46,18 +46,23 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 # fuzzy-searching configuration
+source /usr/share/fzf/key-bindings.zsh
 export FZF_BASE='/usr/bin/fzf'
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
   --color=pointer:#b04c50,bg+:#111314
 '
-
-# plugin configuration
-export PLUGINS="$HOME/.plugins"
-
-while read -r PLUGIN; do
-  source "$PLUGIN"
-done < <(fd -g '*.zsh' $PLUGINS)
+eval "$(zoxide init zsh)"
+export _ZO_FZF_OPTS=$FZF_DEFAULT_OPTS"
+  --preview='exa -T --icons --git-ignore {2} | head -n 50'
+"
+zle -N __zoxide_zi
+function _z_search() {
+  zle __zoxide_zi
+  zle reset-prompt
+}
+zle -N _z_search
+bindkey '^G' _z_search
 
 # custom prompt
 eval "$(starship init zsh)"

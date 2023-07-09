@@ -4,10 +4,8 @@ set -o errexit
 set -o pipefail
 
 CONFIG="$HOME/.config"
-PLUGINS="$HOME/.plugins"
 CONFIG_SOURCE="$(dirname $0)/config"
 HOME_SOURCE="$(dirname $0)/home"
-PLUGINS_SOURCE="$(dirname $0)/plugins"
 
 # create the .config directory if it doesn't exist
 mkdir -p "$CONFIG"
@@ -21,6 +19,3 @@ done < <(ls $CONFIG_SOURCE)
 while read -r ITEM; do
   ln -nsf "$(readlink -m $HOME_SOURCE/$ITEM)" "$HOME/$ITEM"
 done < <(ls $HOME_SOURCE)
-
-# symlink the plugins directory directly
-ln -nsf "$(readlink -m $PLUGINS_SOURCE)" "$PLUGINS"
