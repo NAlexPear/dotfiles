@@ -21,7 +21,6 @@ set $term kitty
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
-set $menu wofi --show=run --monitor=DP-2 --lines=5 --prompt="" --width=800
 
 ### Output configuration
 output * mode 1920x1080@144Hz background '#000000' solid_color
@@ -45,10 +44,10 @@ input '1386:886:Wacom_Intuos_BT_S_Pen' map_to_output 'DP-2'
     bindsym $mod+Shift+q kill
 
     # Start your launcher
-    bindsym $mod+d exec $menu
+    bindsym $mod+d exec --no-startup-id $term --config ~/.config/kitty/float.conf --class=floating-term -e ~/.config/sway/launch.sh
 
-    # Pick an emoji with $menu
-    bindsym $mod+e exec wofi-emoji
+    # Pick an emoji with the launcher
+    bindsym $mod+e exec --no-startup-id $term --config ~/.config/kitty/float.conf --class=floating-term -e ~/.config/sway/launch.sh emoji
 
     # Reload the configuration file
     bindsym $mod+Shift+c reload
@@ -177,5 +176,8 @@ exec --no-startup-id swaymsg workspace 1
 exec --no-startup-id $term --config ~/.config/kitty/vim.conf
 for_window [app_id="kitty" workspace="1"] fullscreen enable
 for_window [title=".+[Ss]haring (Indicator|your screen)"] kill
+
+# handle floating terminals
+for_window [app_id="floating-term"] floating enable
 
 include /etc/sway/config.d/*

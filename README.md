@@ -6,7 +6,7 @@
 
 To symlink these files to the proper locations, use `link.sh`.
 
-Linux distros with `systemd` are assumed, and no dependency resolution is attempted. You will probably want to install the following for the best experience:
+Linux distros running `wayland`-based compositors are assumed for most dependencies, and no dependency resolution is attempted. You will probably want to install the following for the best experience:
 
 `bat`
 `diffsitter`
@@ -20,8 +20,9 @@ Linux distros with `systemd` are assumed, and no dependency resolution is attemp
 `sway`
 `ttf-iosevka`
 `ttf-iosevka-term`
-`wofi`
+`uni`
 `waybar`
+`wl-clipboard`
 `zoxide`
 
 ## Screenshots
