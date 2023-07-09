@@ -46,7 +46,8 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 # fuzzy-searching configuration
-source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_BASE='/usr/bin/fzf'
 export FZF_DEFAULT_COMMAND='fd --type f'
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
