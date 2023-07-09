@@ -22,7 +22,7 @@ Linux distros with `systemd` are assumed, and no dependency resolution is attemp
 `ttf-iosevka-term`
 `wofi`
 `waybar`
-`z`
+`zoxide`
 
 ## Screenshots
 
