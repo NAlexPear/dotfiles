@@ -178,6 +178,6 @@ for_window [app_id="kitty" workspace="1"] fullscreen enable
 for_window [title=".+[Ss]haring (Indicator|your screen)"] kill
 
 # handle floating terminals
-for_window [app_id="floating-term"] floating enable
+for_window [app_id="floating-term"] floating enable, resize set 800 400
 
 include /etc/sway/config.d/*
