@@ -83,6 +83,10 @@ return {
       end
     }
 
+    lsp.yamlls.setup {
+      capabilities = capabilities,
+    }
+
     lsp.tsserver.setup {
       capabilities = capabilities,
     }
