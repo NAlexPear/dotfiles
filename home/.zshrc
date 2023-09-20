@@ -55,7 +55,7 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 '
 eval "$(zoxide init zsh)"
 export _ZO_FZF_OPTS=$FZF_DEFAULT_OPTS"
-  --preview='exa -T --icons --git-ignore {2} | head -n 50'
+  --preview='eza -T --icons --color always --git-ignore {2} | head -n 50'
 "
 zle -N __zoxide_zi
 function _z_search() {
@@ -90,7 +90,7 @@ alias gr='git remote'
 alias gra='git remote add'
 alias grb='git rebase'
 alias gst='git status'
-alias ls='exa'
+alias ls='eza'
 alias l='erd -c ls'
 alias tree='erd -c tree'
 

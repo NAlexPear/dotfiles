@@ -10,7 +10,7 @@ Linux distros running `wayland`-based compositors are assumed for most dependenc
 
 `bat`
 `diffsitter`
-`exa`
+`eza`
 `erdtree`
 `fd`
 `fzf`

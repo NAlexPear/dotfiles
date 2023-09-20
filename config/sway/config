@@ -180,4 +180,5 @@ for_window [title=".+[Ss]haring (Indicator|your screen)"] kill
 # handle floating terminals
 for_window [app_id="floating-term"] floating enable, resize set 800 400
 
+# include default configurations
 include /etc/sway/config.d/*
