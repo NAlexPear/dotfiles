@@ -12,10 +12,10 @@ mkdir -p "$CONFIG"
 
 # symlink top-level .config subdirectories and files
 while read -r ITEM; do
-  ln -nsf "$(readlink -m $CONFIG_SOURCE/$ITEM)" "$CONFIG/$ITEM"
+  ln -Fs "$(greadlink -m $CONFIG_SOURCE/$ITEM)" "$CONFIG/$ITEM"
 done < <(ls $CONFIG_SOURCE)
 
 # symlink top-level $HOME subdirectories and files
 while read -r ITEM; do
-  ln -nsf "$(readlink -m $HOME_SOURCE/$ITEM)" "$HOME/$ITEM"
+  ln -Fs "$(greadlink -m $HOME_SOURCE/$ITEM)" "$HOME/$ITEM"
 done < <(ls $HOME_SOURCE)
