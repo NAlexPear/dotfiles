@@ -41,6 +41,9 @@ return {
       capabilities = capabilities,
       settings = {
         ['rust-analyzer'] = {
+          extraEnv = {
+            RUSTFLAGS = '--cfg=web_sys_unstable_apis',
+          },
           cargo = {
             allFeatures = true,
             loadOutDirsFromCheck = true,
