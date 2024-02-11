@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=/usr/bin/roam --ozone-platform=wayland --enable-features=UseOzonePlatform
+Name=Roam
+Type=Application
