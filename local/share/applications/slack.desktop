@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=/usr/bin/slack --ozone-platform-hint=auto
+Name=Slack
+Type=Application

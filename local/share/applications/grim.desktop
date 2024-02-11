@@ -1,0 +1,5 @@
+[Desktop Entry]
+Exec=sh -c '/usr/bin/grim -g "$(slurp)" "~/Pictures/Screenshots/$(date +%Y-%m-%d-%s%3N)-screenshot.png"'
+Name=Grim
+Comment=grab images from a Wayland compositor
+Type=Application

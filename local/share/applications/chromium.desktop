@@ -1,0 +1,5 @@
+[Desktop Entry]
+Exec=/usr/bin/chromium --ozone-platform=wayland --enable-features=UseOzonePlatform Name=chromium
+Comment=the web browser from Google
+Name=Chromium
+Type=Application

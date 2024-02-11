@@ -1,0 +1,4 @@
+[Desktop Entry]
+Exec=/usr/bin/spotify --ozone-platform=wayland --enable-features=UseOzonePlatform
+Name=Spotify
+Type=Application
