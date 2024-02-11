@@ -6,15 +6,13 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 '
 
 # generate message payloads based on args
+applications=~/.local/share/applications
 message=''
 case "${1:-commands}" in
-  commands) message="$(compgen -c | fzf)" ;; # FIXME: use dex + .desktop files
+  # FIXME: use the Name field instead of the desktop file name itself
+  commands) message="dex $applications/$(ls $applications | rg -e desktop | fzf)" ;;
   emoji) message="wl-copy -n $(uni -c e all | fzf | cut -d ' ' -f1)" ;;
 esac
-
-# TODO: include more variations from args
-# 1. *.desktop files (or equivalent wrapper scripts)
-# 2. frecency weights for commands (based on use in history)
 
 # launch the generated message using dbus/swaymsg
 hyprctl dispatch -- exec $message
