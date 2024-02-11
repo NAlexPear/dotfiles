@@ -9,8 +9,17 @@ export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 applications=~/.local/share/applications
 message=''
 case "${1:-commands}" in
-  # FIXME: use the Name field instead of the desktop file name itself
-  commands) message="dex $applications/$(ls $applications | rg -e desktop | fzf)" ;;
+  commands) message="dex $(
+    fd \
+      -e desktop \
+      -E 'userapp*' \
+      . $applications \
+      -x bash -c 'echo "$(dex -p Name {}) {}"' | \
+    fzf \
+      --bind 'enter:become(echo {2})' \
+      --delimiter=' ' \
+      --with-nth 1
+  )" ;;
   emoji) message="wl-copy -n $(uni -c e all | fzf | cut -d ' ' -f1)" ;;
 esac
 
