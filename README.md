@@ -14,17 +14,20 @@ Linux distros running `wayland`-based compositors are assumed for most dependenc
 `erdtree`
 `fd`
 `fzf`
+`hyprland`
 `kitty`
 `nvim`
-`playerctl`
-`sway`
+`qt6-wayland`
 `ttf-iosevka`
 `ttf-iosevka-term`
 `uni`
-`waybar`
 `wl-clipboard`
+`xdg-desktop-portal-hyprland`
+`xdg-desktop-portal-gtk`
 `zoxide`
 
 ## Screenshots
+
+Window management is done through Hyprland on an Ultrawide monitor.
 
 ![terminals](./screenshots/desktop.png)
