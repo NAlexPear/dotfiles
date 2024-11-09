@@ -90,7 +90,7 @@ return {
       capabilities = capabilities,
     }
 
-    lsp.tsserver.setup {
+    lsp.ts_ls.setup {
       capabilities = capabilities,
     }
 
