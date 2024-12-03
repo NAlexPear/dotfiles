@@ -1,5 +1,8 @@
 # `dotfiles`
 
+> "The best workflows look like a retrofuturist seizure"
+> - me
+
 `NAlexPear`'s collection of dotfiles for daily use.
 
 ## Usage
