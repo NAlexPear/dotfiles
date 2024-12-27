@@ -106,5 +106,5 @@ if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/
 
 # gcloud configuration
 if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
-export PATH="/usr/local/opt/libpq/bin:$PATH"
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"

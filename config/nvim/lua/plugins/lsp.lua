@@ -5,6 +5,7 @@ return {
   config = function()
     -- initialize language server capabilities
     local lsp = require('lspconfig')
+    local configs = require('lspconfig/configs')
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
@@ -83,11 +84,28 @@ return {
       end
     }
 
+    configs.postgres_lsp = {
+      default_config = {
+        name = 'postgres_lsp',
+        cmd = { 'postgres_lsp' },
+        filetypes = { 'sql' },
+        single_file_support = true,
+      }
+    }
+    lsp.postgres_lsp.setup {
+      capabilities = capabilities,
+    }
+
     lsp.yamlls.setup {
       capabilities = capabilities,
     }
 
-    lsp.tsserver.setup {
+    lsp.ts_ls.setup {
+      settings = {
+        diagnostics = {
+          ignoredCodes = { 80005, 6385, 6387 },
+        }
+      },
       capabilities = capabilities,
     }
 
