@@ -1,0 +1,9 @@
+background = 111314
+font-family = Iosevka Term
+font-size = 20
+theme = SpaceGray
+
+window-padding-color = extend-always
+
+mouse-hide-while-typing = true
+desktop-notifications = false
