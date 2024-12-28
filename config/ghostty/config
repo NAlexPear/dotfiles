@@ -3,4 +3,7 @@ font-family = Iosevka Term
 font-size = 18
 theme = SpaceGray Eighties Dull
 gtk-titlebar = false
+gtk-single-instance = true
 mouse-hide-while-typing = true
+keybind = shift+control+plus=increase_font_size:1
+keybind = shift+control+minus=decrease_font_size:1
