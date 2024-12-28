@@ -1,0 +1,6 @@
+background = 111314
+font-family = Iosevka Term
+font-size = 18
+theme = SpaceGray
+gtk-titlebar = false
+mouse-hide-while-typing = true
