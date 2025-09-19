@@ -4,8 +4,6 @@ return {
   dependencies = 'hrsh7th/cmp-nvim-lsp',
   config = function()
     -- initialize language server capabilities
-    local lsp = require('lspconfig')
-    local configs = require('lspconfig/configs')
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
@@ -38,7 +36,7 @@ return {
     }
 
     -- enable individual languages
-    lsp.rust_analyzer.setup {
+    vim.lsp.config.rust_analyzer = {
       capabilities = capabilities,
       settings = {
         ['rust-analyzer'] = {
@@ -73,8 +71,9 @@ return {
         }
       }
     }
+    vim.lsp.enable({ 'rust_analyzer' })
 
-    lsp.eslint.setup {
+    vim.lsp.config.eslint = {
       capabilities = capabilities,
       on_attach = function(_, buffer)
         vim.api.nvim_create_autocmd('BufWritePre', {
@@ -83,24 +82,14 @@ return {
         })
       end
     }
+    vim.lsp.enable({ 'eslint' })
 
-    configs.postgres_lsp = {
-      default_config = {
-        name = 'postgres_lsp',
-        cmd = { 'postgres_lsp' },
-        filetypes = { 'sql' },
-        single_file_support = true,
-      }
-    }
-    lsp.postgres_lsp.setup {
+    vim.lsp.config.yamlls = {
       capabilities = capabilities,
     }
+    vim.lsp.enable({ 'yamlls' })
 
-    lsp.yamlls.setup {
-      capabilities = capabilities,
-    }
-
-    lsp.ts_ls.setup {
+    vim.lsp.config.ts_ls = {
       settings = {
         diagnostics = {
           ignoredCodes = { 80005, 6385, 6387 },
@@ -108,12 +97,14 @@ return {
       },
       capabilities = capabilities,
     }
+    vim.lsp.enable({ 'ts_ls' })
 
-    lsp.bashls.setup {
+    vim.lsp.config.bashls = {
       capabilities = capabilities,
     }
+    vim.lsp.enable({ 'bashls' })
 
-    lsp.lua_ls.setup {
+    vim.lsp.config.lua_ls = {
       capabilities = capabilities,
       settings = {
         Lua = {
@@ -123,16 +114,19 @@ return {
         }
       }
     }
+    vim.lsp.enable({ 'lua_ls' })
 
-    lsp.ccls.setup {
+    vim.lsp.config.ccls = {
       capabilities = capabilities,
     }
+    vim.lsp.enable({ 'ccls' })
 
-    lsp.html.setup {
+    vim.lsp.config.html = {
       filetypes = { 'html', 'handlebars', 'html.handlebars' },
       capabilities = capabilities,
       provideFormatter = true,
     }
+    vim.lsp.enable({ 'html' })
 
     -- set diagnostic symbols
     vim.fn.sign_define(

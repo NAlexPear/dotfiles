@@ -1,3 +1,8 @@
+# set up Ghostty shell integration if needed
+if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
+  source $GHOSTTY_RESOURCES_DIR/shell-integration/zsh/ghostty-integration
+fi
+
 # configure more robust history
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
@@ -101,10 +106,13 @@ alias t='todo.sh -d ~/.config/todo.cfg'
 # the One True Editor
 export EDITOR=nvim
 
-# Google Cloud SDK configuration
-if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/google-cloud-sdk/path.zsh.inc"; fi
-
 # gcloud configuration
-if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/google-cloud-sdk/completion.zsh.inc"; fi
+if [ -f "$(dirname $(dirname $(readlink /opt/homebrew/bin/gcloud)))/path.zsh.inc" ]; then . "$(dirname $(dirname $(readlink /opt/homebrew/bin/gcloud)))/path.zsh.inc"; fi
+if [ -f "$(dirname $(dirname $(readlink /opt/homebrew/bin/gcloud)))/completion.zsh.inc" ]; then . "$(dirname $(dirname $(readlink /opt/homebrew/bin/gcloud)))/completion.zsh.inc"; fi
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/alex/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions

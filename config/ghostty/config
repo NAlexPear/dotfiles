@@ -1,9 +1,12 @@
 background = 111314
-font-family = Iosevka Term
-font-size = 20
+font-family = Iosevka Custom
+font-size = 24
 theme = SpaceGray
 
 window-padding-color = extend-always
 
 mouse-hide-while-typing = true
 desktop-notifications = false
+keybind = shift+enter=text:\n
+
+shell-integration-features = ssh-env,ssh-terminfo
