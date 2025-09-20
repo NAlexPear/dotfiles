@@ -5,6 +5,7 @@ $git_branch$git_commit$git_state$git_status\
 ($rust$nodejs)
 $character 
 """
+command_timeout = 1500
 
 [directory]
 format = "[$path]($style)[$lock_symbol]($lock_style)"
