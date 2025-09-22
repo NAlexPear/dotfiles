@@ -1,9 +1,14 @@
 background = 111314
-font-family = Iosevka Term
-font-size = 18
-theme = SpaceGray Eighties Dull
+font-family = Iosevka Custom
+font-size = 16
+
 gtk-titlebar = false
 gtk-single-instance = true
+
+window-padding-color = extend-always
+
 mouse-hide-while-typing = true
 keybind = shift+control+plus=increase_font_size:1
 keybind = shift+control+minus=decrease_font_size:1
+
+shell-integration-features = ssh-env,ssh-terminfo

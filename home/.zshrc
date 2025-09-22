@@ -24,7 +24,8 @@ setopt complete_in_word
 setopt always_to_end
 
 # configure vi mode
-bindkey -v
+KEYTIMEOUT=1
+set -o vi
 
 # Language and locale configuration
 export LANG=en_US.UTF-8
