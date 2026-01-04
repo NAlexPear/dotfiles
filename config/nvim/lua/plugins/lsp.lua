@@ -74,13 +74,7 @@ return {
     vim.lsp.enable({ 'rust_analyzer' })
 
     vim.lsp.config.eslint = {
-      capabilities = capabilities,
-      on_attach = function(_, buffer)
-        vim.api.nvim_create_autocmd('BufWritePre', {
-          buffer = buffer,
-          command = 'EslintFixAll',
-        })
-      end
+      capabilities = capabilities
     }
     vim.lsp.enable({ 'eslint' })
 
@@ -89,7 +83,7 @@ return {
     }
     vim.lsp.enable({ 'yamlls' })
 
-    vim.lsp.config.ts_ls = {
+    vim.lsp.config.tsgo = {
       settings = {
         diagnostics = {
           ignoredCodes = { 80005, 6385, 6387 },
@@ -97,7 +91,7 @@ return {
       },
       capabilities = capabilities,
     }
-    vim.lsp.enable({ 'ts_ls' })
+    vim.lsp.enable({ 'tsgo' })
 
     vim.lsp.config.bashls = {
       capabilities = capabilities,

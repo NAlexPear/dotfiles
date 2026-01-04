@@ -47,6 +47,9 @@ export LC_TELEPHONE="en_US.UTF-8"
 export LC_MEASUREMENT="en_US.UTF-8"
 export LC_IDENTIFICATION="en_US.UTF-8"
 
+# local bin PATH configuration
+export PATH="$HOME/.local/bin:$PATH"
+
 # Node.js version configuration
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"

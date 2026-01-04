@@ -9,4 +9,5 @@ mouse-hide-while-typing = true
 desktop-notifications = false
 keybind = shift+enter=text:\n
 
+shell-integration = zsh
 shell-integration-features = ssh-env,ssh-terminfo
