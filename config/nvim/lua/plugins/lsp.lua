@@ -3,6 +3,7 @@ return {
   'neovim/nvim-lspconfig',
   dependencies = 'hrsh7th/cmp-nvim-lsp',
   config = function()
+    local util = require('lspconfig.util')
     -- initialize language server capabilities
     local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
@@ -73,11 +74,6 @@ return {
     }
     vim.lsp.enable({ 'rust_analyzer' })
 
-    vim.lsp.config.eslint = {
-      capabilities = capabilities
-    }
-    vim.lsp.enable({ 'eslint' })
-
     vim.lsp.config.yamlls = {
       capabilities = capabilities,
     }
@@ -92,6 +88,81 @@ return {
       capabilities = capabilities,
     }
     vim.lsp.enable({ 'tsgo' })
+
+    vim.lsp.config.oxlint = {
+      cmd = { 'oxlint', '--lsp' },
+      workspace_required = true,
+      on_attach = function(client, bufnr)
+        vim.api.nvim_buf_create_user_command(bufnr, 'LspOxlintFixAll', function()
+          client:exec_cmd({
+            title = 'Apply Oxlint automatic fixes',
+            command = 'oxc.fixAll',
+            arguments = { { uri = vim.uri_from_bufnr(bufnr) } },
+          })
+        end, {
+          desc = 'Apply Oxlint automatic fixes',
+        })
+      end,
+      root_dir = function(bufnr, on_dir)
+        local fname = vim.api.nvim_buf_get_name(bufnr)
+
+        -- Oxlint resolves configuration by walking upward and using the nearest config file
+        -- to the file being processed. We therefore compute the root directory by locating
+        -- the closest `.oxlintrc.json` (or `package.json` fallback) above the buffer.
+        local root_markers = util.insert_package_json({ '.oxlintrc.json' }, 'oxlint', fname)[1]
+        on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
+      end,
+      init_options = {
+        settings = {
+          ['run'] = 'onType',
+          -- ['configPath'] = nil,
+          -- ['tsConfigPath'] = nil,
+          -- ['unusedDisableDirectives'] = 'allow',
+          -- ['typeAware'] = false,
+          -- ['disableNestedConfig'] = false,
+          ['fixKind'] = 'safe_fix',
+        },
+      },
+    }
+    vim.lsp.enable({ 'oxlint' })
+
+    vim.lsp.config.oxfmt = {
+      cmd = { 'oxfmt', '--lsp' },
+      filetypes = {
+        'javascript',
+        'javascriptreact',
+        'javascript.jsx',
+        'typescript',
+        'typescriptreact',
+        'typescript.tsx',
+        'toml',
+        'json',
+        'jsonc',
+        'json5',
+        'yaml',
+        'html',
+        'vue',
+        'handlebars',
+        'hbs',
+        'css',
+        'scss',
+        'less',
+        'graphql',
+        'markdown',
+        'mdx',
+      },
+      workspace_required = true,
+      root_dir = function(bufnr, on_dir)
+        local fname = vim.api.nvim_buf_get_name(bufnr)
+
+        -- Oxfmt resolves configuration by walking upward and using the nearest config file
+        -- to the file being processed. We therefore compute the root directory by locating
+        -- the closest `.oxfmtrc.json` (or `package.json` fallback) above the buffer.
+        local root_markers = util.insert_package_json({ '.oxfmtrc.json' }, 'oxfmt', fname)[1]
+        on_dir(vim.fs.dirname(vim.fs.find(root_markers, { path = fname, upward = true })[1]))
+      end,
+    }
+    vim.lsp.enable({ 'oxfmt' })
 
     vim.lsp.config.bashls = {
       capabilities = capabilities,
@@ -109,11 +180,6 @@ return {
       }
     }
     vim.lsp.enable({ 'lua_ls' })
-
-    vim.lsp.config.ccls = {
-      capabilities = capabilities,
-    }
-    vim.lsp.enable({ 'ccls' })
 
     vim.lsp.config.html = {
       filetypes = { 'html', 'handlebars', 'html.handlebars' },
