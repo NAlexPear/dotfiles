@@ -79,7 +79,14 @@ require('lazy').setup('plugins')
 -- format buffers on save where possible (depending on the language server)
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = { "*.ts", "*.tsx", "*.lua", "*.rs", "*.yaml", "*.sh", "*.hbs", "*.sql" },
-  callback = function() vim.lsp.buf.format() end,
+  callback = function()
+    vim.lsp.buf.format({
+      async = false,
+      filter = function (client)
+        return client.name ~= 'tsgo'
+      end
+    })
+  end,
 })
 
 ----------------------

@@ -84,8 +84,7 @@ return {
         diagnostics = {
           ignoredCodes = { 80005, 6385, 6387 },
         }
-      },
-      capabilities = capabilities,
+      }
     }
     vim.lsp.enable({ 'tsgo' })
 
