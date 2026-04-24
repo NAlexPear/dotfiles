@@ -76,6 +76,7 @@ return {
 
     vim.lsp.config.yamlls = {
       capabilities = capabilities,
+      filetypes = { 'yaml' },
     }
     vim.lsp.enable({ 'yamlls' })
 
@@ -130,10 +131,8 @@ return {
       filetypes = {
         'javascript',
         'javascriptreact',
-        'javascript.jsx',
         'typescript',
         'typescriptreact',
-        'typescript.tsx',
         'toml',
         'json',
         'jsonc',
@@ -142,13 +141,11 @@ return {
         'html',
         'vue',
         'handlebars',
-        'hbs',
         'css',
         'scss',
         'less',
         'graphql',
         'markdown',
-        'mdx',
       },
       workspace_required = true,
       root_dir = function(bufnr, on_dir)
@@ -181,28 +178,28 @@ return {
     vim.lsp.enable({ 'lua_ls' })
 
     vim.lsp.config.html = {
-      filetypes = { 'html', 'handlebars', 'html.handlebars' },
+      filetypes = { 'html', 'handlebars' },
       capabilities = capabilities,
       provideFormatter = true,
     }
     vim.lsp.enable({ 'html' })
 
     -- set diagnostic symbols
-    vim.fn.sign_define(
-      'DiagnosticSignError',
-      { texthl = 'DiagnosticSignError', text = ' ●', numhl = 'DiagnosticSignError' }
-    )
-    vim.fn.sign_define(
-      'DiagnosticSignWarning',
-      { texthl = 'DiagnosticSignWarning', text = ' ●', numhl = 'DiagnosticSignWarning' }
-    )
-    vim.fn.sign_define(
-      'DiagnosticSignHint',
-      { texthl = 'DiagnosticSignHint', text = ' ●', numhl = 'DiagnosticSignHint' }
-    )
-    vim.fn.sign_define(
-      'DiagnosticSignInformation',
-      { texthl = 'DiagnosticSignInformation', text = ' ●', numhl = 'DiagnosticSignInformation' }
-    )
+    vim.diagnostic.config({
+      signs = {
+        text = {
+          [vim.diagnostic.severity.ERROR] = ' ●',
+          [vim.diagnostic.severity.WARN]  = ' ●',
+          [vim.diagnostic.severity.HINT]  = ' ●',
+          [vim.diagnostic.severity.INFO]  = ' ●',
+        },
+        numhl = {
+          [vim.diagnostic.severity.ERROR] = 'DiagnosticSignError',
+          [vim.diagnostic.severity.WARN]  = 'DiagnosticSignWarning',
+          [vim.diagnostic.severity.HINT]  = 'DiagnosticSignHint',
+          [vim.diagnostic.severity.INFO]  = 'DiagnosticSignInformation',
+        },
+      },
+    })
   end
 }

@@ -44,11 +44,11 @@ vim.keymap.set('', '<Leader>e', ':e<Space>')
 vim.keymap.set('', '<Leader>c', ':cd<Space>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action, { silent = true })
 vim.keymap.set('n', '<Leader>ad', vim.lsp.buf.definition, { silent = true })
-vim.keymap.set('n', '<Leader>aj', vim.diagnostic.goto_next, { silent = true })
-vim.keymap.set('n', '<Leader>ak', vim.diagnostic.goto_prev, { silent = true })
+vim.keymap.set('n', '<Leader>aj', function() vim.diagnostic.jump({ count =  1, float = true }) end, { silent = true })
+vim.keymap.set('n', '<Leader>ak', function() vim.diagnostic.jump({ count = -1, float = true }) end, { silent = true })
 vim.keymap.set('n', 'K', vim.lsp.buf.hover, { silent = true })
 vim.keymap.set('n', 'H', function()
-  return vim.diagnostic.open_float(0, { scope = 'line' })
+  return vim.diagnostic.open_float({ scope = 'line' })
 end, { silent = true })
 
 ----------------------
@@ -57,7 +57,7 @@ end, { silent = true })
 
 -- bootstrap lazy.nvim for loading plugins
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
