@@ -102,6 +102,7 @@ alias gst='git status'
 alias ls='eza'
 alias l='erd -c ls'
 alias tree='erd -c tree'
+alias wtf='wt list --full'
 
 # todo.txt configuration
 export TODOTXT_DEFAULT_ACTION='lsa'
@@ -115,8 +116,11 @@ if [ -f "$(dirname $(dirname $(readlink /opt/homebrew/bin/gcloud)))/path.zsh.inc
 if [ -f "$(dirname $(dirname $(readlink /opt/homebrew/bin/gcloud)))/completion.zsh.inc" ]; then . "$(dirname $(dirname $(readlink /opt/homebrew/bin/gcloud)))/completion.zsh.inc"; fi
 export CLOUDSDK_PYTHON_SITEPACKAGES=1
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/alex/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
