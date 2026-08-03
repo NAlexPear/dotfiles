@@ -50,9 +50,13 @@ export LC_IDENTIFICATION="en_US.UTF-8"
 # local bin PATH configuration
 export PATH="$HOME/.local/bin:$PATH"
 
-# Node.js version configuration
-export VOLTA_HOME="$HOME/.volta"
-export PATH="$VOLTA_HOME/bin:$PATH"
+# pnpm
+export PNPM_HOME="$HOME/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+# pnpm end
 
 # fuzzy-searching configuration
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
