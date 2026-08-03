@@ -18,6 +18,7 @@ Linux distros running `wayland`-based compositors are assumed for most dependenc
 `nvim`
 `playerctl`
 `sway`
+`tree-sitter-cli`
 `ttf-iosevka`
 `ttf-iosevka-term`
 `uni`
