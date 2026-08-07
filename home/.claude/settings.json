@@ -1,0 +1,57 @@
+{
+  "enabledPlugins": {
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "worktrunk": {
+      "source": {
+        "repo": "max-sixty/worktrunk",
+        "source": "github"
+      }
+    }
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "cat >/dev/null; [ -n \"$CURSOR_VERSION\" ] && exit 0; curl -sf --max-time 0.2 -X POST --unix-socket '/Users/alexpearson/Library/Application Support/Roam/roam-local-api-beta.sock' \"http://localhost/api/v1/activity/claude-code/post-tool-use?pid=$PPID\" >/dev/null 2>&1 || true",
+            "timeout": 3,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bash '/Users/alexpearson/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "cat >/dev/null; [ -n \"$CURSOR_VERSION\" ] && exit 0; curl -sf --max-time 0.2 -X POST --unix-socket '/Users/alexpearson/Library/Application Support/Roam/roam-local-api-beta.sock' \"http://localhost/api/v1/activity/claude-code/stop?pid=$PPID\" >/dev/null 2>&1 || true",
+            "timeout": 3,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "command": "wt list statusline --format=claude-code",
+    "type": "command"
+  },
+  "editorMode": "vim",
+  "theme": "dark",
+  "tui": "fullscreen",
+  "outputStyle": "Simplified Technical English"
+}
