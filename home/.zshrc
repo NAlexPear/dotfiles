@@ -128,3 +128,10 @@ compinit
 # End of Docker CLI completions
 
 if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
+
+# bun completions
+[ -s "/Users/alexpearson/.bun/_bun" ] && source "/Users/alexpearson/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
