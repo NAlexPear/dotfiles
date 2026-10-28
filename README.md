@@ -6,6 +6,8 @@
 
 To symlink these files to the proper locations, use `link.sh`.
 
+To apply the Rex app settings on macOS, quit Rex Beta and run `config/rex/settings.sh`.
+
 Linux distros running `wayland`-based compositors are assumed for most dependencies, and no dependency resolution is attempted. You will probably want to install the following for the best experience:
 
 `bat`
