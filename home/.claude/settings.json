@@ -13,7 +13,16 @@
     ],
     "SessionStart": [
       {
-        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/bin/sh -c 'rex __internal session-start --agent claude 2>/dev/null || true'",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
         "hooks": [
           {
             "type": "command",
@@ -35,12 +44,17 @@
       }
     ]
   },
+  "permissions": {
+    "defaultMode": "auto"
+  },
   "statusLine": {
     "type": "command",
     "command": "wt list statusline --format=claude-code"
   },
   "enabledPlugins": {
-    "worktrunk@worktrunk": true
+    "worktrunk@worktrunk": true,
+    "swift-lsp@claude-plugins-official": true,
+    "incident-io@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "worktrunk": {
@@ -58,9 +72,14 @@
     },
     "claude-opus-5": {
       "effortLevel": "medium"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "xhigh"
     }
   },
   "tui": "fullscreen",
   "theme": "dark",
-  "editorMode": "vim"
+  "editorMode": "vim",
+  "switchModelsOnFlag": true,
+  "agentPushNotifEnabled": true
 }
