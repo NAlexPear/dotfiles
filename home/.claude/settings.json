@@ -1,57 +1,66 @@
 {
-  "enabledPlugins": {
-    "worktrunk@worktrunk": true
-  },
-  "extraKnownMarketplaces": {
-    "worktrunk": {
-      "source": {
-        "repo": "max-sixty/worktrunk",
-        "source": "github"
-      }
-    }
-  },
   "hooks": {
     "PostToolUse": [
       {
         "hooks": [
           {
+            "type": "command",
             "command": "cat >/dev/null; [ -n \"$CURSOR_VERSION\" ] && exit 0; curl -sf --max-time 0.2 -X POST --unix-socket '/Users/alexpearson/Library/Application Support/Roam/roam-local-api-beta.sock' \"http://localhost/api/v1/activity/claude-code/post-tool-use?pid=$PPID\" >/dev/null 2>&1 || true",
-            "timeout": 3,
-            "type": "command"
+            "timeout": 3
           }
         ]
       }
     ],
     "SessionStart": [
       {
+        "matcher": "*",
         "hooks": [
           {
+            "type": "command",
             "command": "bash '/Users/alexpearson/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
+            "timeout": 10
           }
-        ],
-        "matcher": "*"
+        ]
       }
     ],
     "Stop": [
       {
         "hooks": [
           {
+            "type": "command",
             "command": "cat >/dev/null; [ -n \"$CURSOR_VERSION\" ] && exit 0; curl -sf --max-time 0.2 -X POST --unix-socket '/Users/alexpearson/Library/Application Support/Roam/roam-local-api-beta.sock' \"http://localhost/api/v1/activity/claude-code/stop?pid=$PPID\" >/dev/null 2>&1 || true",
-            "timeout": 3,
-            "type": "command"
+            "timeout": 3
           }
         ]
       }
     ]
   },
   "statusLine": {
-    "command": "wt list statusline --format=claude-code",
-    "type": "command"
+    "type": "command",
+    "command": "wt list statusline --format=claude-code"
   },
-  "editorMode": "vim",
-  "theme": "dark",
+  "enabledPlugins": {
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    }
+  },
+  "outputStyle": "Simplified Technical English",
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-fable-5-1": {
+      "effortLevel": "high"
+    },
+    "claude-opus-5": {
+      "effortLevel": "medium"
+    }
+  },
   "tui": "fullscreen",
-  "outputStyle": "Simplified Technical English"
+  "theme": "dark",
+  "editorMode": "vim"
 }
